@@ -3,18 +3,19 @@ package dongdang.homework.MultiChatClient.view;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dongdang.homework.MultiChatClient.R;
 import dongdang.homework.MultiChatClient.controller.Controller;
@@ -47,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new ChatAdapter(this,bubbleDTOList);
         lvChat.setAdapter(chatAdapter);
 
+        //수신 스레드 시작.
         Controller.getClientService().receive(lvChat,chatAdapter,bubbleDTOList,ChatActivity.this);
 
         etMessage.setOnKeyListener(new View.OnKeyListener() {
@@ -54,17 +56,25 @@ public class ChatActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     //SEND
-                    if(etMessage.getText().toString().equals("")) return true;
-                    Controller.getClientService().send(etMessage.getText().toString());
-                    etMessage.setText("");
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
-
+                    btnSend.performClick();
                     return true;
                 }
                 return false;
             }
         });
+        etMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch(actionId) {
+                    case EditorInfo.IME_ACTION_GO:
+                        btnSend.performClick();
+                        break;
+                }
+                    return true;
+
+            }
+        });
+
         btnSend.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -72,8 +82,6 @@ public class ChatActivity extends AppCompatActivity {
                 if(etMessage.getText().toString().equals("")) return;
                 Controller.getClientService().send(etMessage.getText().toString());
                 etMessage.setText("");
-                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
             }
         });
         btnBack.setOnClickListener(new View.OnClickListener(){
@@ -84,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    //2번 눌러야 뒤로가기.
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();

@@ -25,8 +25,8 @@ public class ClientReceiverThread extends Thread {
     private ChatAdapter chatAdapter;
     private ArrayList<ChatBubbleDTO> chatList;
     private AppCompatActivity context;
-    public ClientReceiverThread() {
 
+    public ClientReceiverThread() {
     }
 
     public ClientReceiverThread(Socket socket, ListView chatListView, ChatAdapter chatAdapter,ArrayList<ChatBubbleDTO> chatList, AppCompatActivity context) {
@@ -41,7 +41,7 @@ public class ClientReceiverThread extends Thread {
         try {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+            //수신
             while(true) {
                 String message= br.readLine();
                 System.out.println("수신 : "+message);
@@ -52,13 +52,14 @@ public class ClientReceiverThread extends Thread {
                         addChatList(msg);
                     }
                 });
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+
+    //말풍선 추가
     void addChatList(Message msg) {
         try {
             ChatBubbleDTO chatBubble = null;

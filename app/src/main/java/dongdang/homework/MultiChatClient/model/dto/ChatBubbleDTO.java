@@ -1,8 +1,5 @@
 package dongdang.homework.MultiChatClient.model.dto;
 
-import android.graphics.Color;
-
-import androidx.annotation.NonNull;
 
 public class ChatBubbleDTO implements Cloneable {
     private String sender;

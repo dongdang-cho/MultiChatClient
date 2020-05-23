@@ -21,19 +21,19 @@
             android:background="#FFF"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:padding="15dp"
+            android:padding="10dp"
             >
+
             <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:src="@drawable/ic_back"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:background="#00000000"
                 android:id="@+id/chatBtnBack"
-                >
-            </ImageButton>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_back"></ImageButton>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -70,6 +70,7 @@
                 android:scaleType="fitCenter"
                 android:background="#00000000"
                 android:id="@+id/chatBtnMenu"
+                android:padding="10dp"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -101,19 +102,31 @@
         android:padding="10dp"
 
         >
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="+"
+            android:textSize="30sp"
+            android:layout_weight="2"
+            android:background="@drawable/activity_send_shape"
+            android:id="@+id/chatBtnpPlus"
+            />
         <EditText
+            android:layout_marginHorizontal="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="9"
             android:background="@drawable/activity_message_shape"
             android:id="@+id/chatEtMessage"
+            android:imeOptions="actionGo"
+            android:inputType="text"
             />
         <Button
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="보내기"
-            android:textSize="20sp"
+            android:text="▶"
+            android:textSize="30sp"
+            android:layout_weight="2"
             android:background="@drawable/activity_send_shape"
             android:id="@+id/chatBtnSend"
             />

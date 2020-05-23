@@ -1,6 +1,5 @@
 package dongdang.homework.MultiChatClient.model.bl;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.ListView;
@@ -21,12 +20,18 @@ import dongdang.homework.MultiChatClient.model.dto.Status;
 import dongdang.homework.MultiChatClient.model.dto.UserInfoDTO;
 
 public class ClientService {
+    private final int GOOD = 200; //통신 양호
+    private final int GOOD_ALLOW = 201; //통신 양호-의미 긍정
+    private final int GOOD_DENY = 202; //통신 양호-의미 부정
+
     private Socket clientSock;
     private boolean state;
     private BufferedReader br;
     private BufferedWriter bw;
     private UserInfoDTO user;
     HashMap<String, ChatBubbleDTO> typeMap;
+
+
     public ClientService() {
         state=false;
         typeMap = new HashMap<>();
@@ -56,17 +61,16 @@ public class ClientService {
         }
     }
 
-    public boolean connect(String ip, int port, String id, String name) {
-
-        user = new UserInfoDTO(ip,port,id,name);
-
+    public boolean connect(final String ip, final int port, String id, String pw) {
+        user = new UserInfoDTO(id,pw);
+        user.setType("login");
         Thread t = new Thread(){
             @Override
             public void run() {
                 super.run();
 
                 try {
-                    clientSock = new Socket(user.getIpAdr(),user.getPort());
+                    clientSock = new Socket(ip,port);
                     bw = new BufferedWriter(new OutputStreamWriter(clientSock.getOutputStream()));
                     br = new BufferedReader(new InputStreamReader(clientSock.getInputStream()));
                 } catch (IOException e) {
@@ -74,18 +78,33 @@ public class ClientService {
                     state=false;
                 }
                 try {
-                    String message = new Gson().toJson(user)+"\n";
+                    String message = new Gson().toJson(user);
                     write(message);
                     String readMsg = read();
                     System.out.println(readMsg);
-                    if(new Gson().fromJson(readMsg, Status.class).getStatus()==200) {
+                    UserInfoDTO responseDTO = new Gson().fromJson(readMsg, UserInfoDTO.class);
+                    if(responseDTO.getStatus()==GOOD_ALLOW) {
                         state=true;
-                    }else {
+                        user.setName(responseDTO.getName());
+                    }else if(responseDTO.getStatus()==GOOD_DENY){
+                        user = null;
                         state=false;
+                        close();
+                    }else {
+                        user = null;
+                        state=false;
+                        try {
+                            clientSock.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        close();
                     }
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
             }
         };
         t.start();
@@ -97,7 +116,53 @@ public class ClientService {
 
         return state;
     }
+    public boolean join(final String ip, final int port, String id, String name, String pw) {
+        final UserInfoDTO joinUser = new UserInfoDTO(id,name,pw);
+        joinUser.setType("join");
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                super.run();
 
+                try {
+                    clientSock = new Socket(ip,port);
+                    bw = new BufferedWriter(new OutputStreamWriter(clientSock.getOutputStream()));
+                    br = new BufferedReader(new InputStreamReader(clientSock.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    state=false;
+                }
+                try {
+                    String message = new Gson().toJson(joinUser);
+                    write(message);
+                    String readMsg = read();
+                    System.out.println(readMsg);
+                    UserInfoDTO responseDTO = new Gson().fromJson(readMsg, UserInfoDTO.class);
+                    if(responseDTO.getStatus()==GOOD_ALLOW) {
+                        state=true;
+                    }else if(responseDTO.getStatus()==GOOD_DENY){
+                        state=false;
+                    }else {
+                        state=false;
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    clientSock.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return state;
+    }
     public Socket getClientSock() {
         return clientSock;
     }
@@ -117,6 +182,7 @@ public class ClientService {
     public HashMap<String, ChatBubbleDTO> getTypeMap() {
         return typeMap;
     }
+
     public void send(String content) {
         Message msg = new Message();
         msg.setType("broadcast");

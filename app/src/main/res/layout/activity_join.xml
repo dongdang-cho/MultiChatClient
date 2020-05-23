@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.MainActivity"
+    tools:context=".view.JoinActivity"
     android:background="#FFF"
     >
     <LinearLayout
@@ -28,6 +28,13 @@
                 android:layout_height="wrap_content"
                 android:text="SKU Chat"
                 android:textSize="50sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-join-"
+                android:layout_marginTop="20dp"
+                android:textSize="30sp"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,77 +42,25 @@
             android:layout_weight="4"
             android:orientation="vertical"
             >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="3"
-                android:gravity="center"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:text="IP"/>
-                <EditText
-                    android:id="@+id/mainEtIP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="xxx.xxx.xxx.xxx"
-                    android:layout_marginHorizontal="20sp"
-                    android:textSize="30sp"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:text=""
-                    android:enabled="false"
-                    android:gravity="center"
-                    />
-            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:layout_weight="3"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:text="Port"/>
+
                 <EditText
-                    android:id="@+id/mainEtPort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint=""
-                    android:layout_marginHorizontal="10sp"
-                    android:textSize="30sp"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:text=""
-                    android:enabled="false"
-                    android:gravity="center"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="3"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:text="ID"/>
-                <EditText
-                    android:id="@+id/mainEtID"
+                    android:id="@+id/joinEtID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10sp"
                     android:textSize="30sp"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:gravity="center"
+                    android:hint="ID"
+                    android:paddingLeft="20dp"
                     />
             </LinearLayout>
             <LinearLayout
@@ -114,20 +69,57 @@
                 android:orientation="horizontal"
                 android:layout_weight="3"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:text="PW"/>
+
                 <EditText
-                    android:id="@+id/mainEtPW"
+                    android:id="@+id/joinEtPW"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:textSize="30sp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:hint="Password"
+                    android:paddingLeft="20dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                >
+
+                <EditText
+                    android:id="@+id/joinEtPWConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:textSize="30sp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:hint="Confirm Password"
+                    android:paddingLeft="20dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                >
+
+                <EditText
+                    android:id="@+id/joinEtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:paddingLeft="20dp"
                     android:layout_marginHorizontal="10sp"
                     android:textSize="30sp"
                     android:imeOptions="actionGo"
-                    android:inputType="textPassword"
-                    android:gravity="center"/>
+                    android:inputType="text"
+                    android:text=""
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,51 +128,19 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 >
-                <LinearLayout
+                <Button
+                    android:id="@+id/joinBtnJoin"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    >
-                    <Button
-                        android:id="@+id/mainBtnConnect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="접속하기"
-                        />
-
-                </LinearLayout>
-                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:text="가입하기"
+                    />
+                <Button
+                    android:id="@+id/joinBtnBack"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    >
-                    <Button
-                        android:id="@+id/mainBtnJoin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="가입하기"
-                        />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    >
-                    <Button
-                        android:id="@+id/mainBtnExit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="나가기"
-                        />
-
-                </LinearLayout>
-
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="뒤로가기"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

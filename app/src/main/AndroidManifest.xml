@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ChatActivity" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".view.JoinActivity"></activity>
     </application>
 
 </manifest>
