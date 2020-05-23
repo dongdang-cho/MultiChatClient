@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch(actionId) {
                     case EditorInfo.IME_ACTION_GO:
-                        btnJoin.performClick();
+                        btnConnect.performClick();
                         break;
                 }
                 return true;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     //SEND
-                    btnJoin.performClick();
+                    btnConnect.performClick();
                     return true;
                 }
                 return false;
