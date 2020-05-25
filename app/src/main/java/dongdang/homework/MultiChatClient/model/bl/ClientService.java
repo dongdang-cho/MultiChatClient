@@ -2,6 +2,7 @@ package dongdang.homework.MultiChatClient.model.bl;
 
 import android.graphics.Color;
 import android.view.Gravity;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +14,12 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import dongdang.homework.MultiChatClient.model.dto.ChatBubbleDTO;
 import dongdang.homework.MultiChatClient.model.dto.Message;
-import dongdang.homework.MultiChatClient.model.dto.Status;
 import dongdang.homework.MultiChatClient.model.dto.UserInfoDTO;
 
 public class ClientService {
@@ -29,6 +32,7 @@ public class ClientService {
     private BufferedReader br;
     private BufferedWriter bw;
     private UserInfoDTO user;
+    private List<UserInfoDTO> visitors;
     HashMap<String, ChatBubbleDTO> typeMap;
 
 
@@ -42,24 +46,7 @@ public class ClientService {
         typeMap.put("my",new ChatBubbleDTO(Gravity.RIGHT,"my",Color.rgb(180,162,242)));
     }
 
-    public String read() throws IOException {
-       return br.readLine();
-    }
 
-    public void write(String message) throws IOException {
-        if(message==null) return;
-        bw.write(message+"\n");
-        bw.flush();
-    }
-    public void close() {
-        try {
-            if(bw!=null)  bw.close();
-            if(br!=null)br.close();
-            if(clientSock!=null)clientSock.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public boolean connect(final String ip, final int port, String id, String pw) {
         user = new UserInfoDTO(id,pw);
@@ -103,8 +90,6 @@ public class ClientService {
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         };
         t.start();
@@ -179,16 +164,21 @@ public class ClientService {
         return user;
     }
 
+    public void setVisitors(List<UserInfoDTO> visitors) {
+        this.visitors = visitors;
+    }
+
+    public List<UserInfoDTO> getVisitors() {
+        return visitors;
+    }
+
     public HashMap<String, ChatBubbleDTO> getTypeMap() {
         return typeMap;
     }
 
     public void send(String content) {
-        Message msg = new Message();
-        msg.setType("broadcast");
-        msg.setSender(user.getName());
-        msg.setMessage(content);
-        msg.setReceiver(null);
+        Message msg = classificationType(content);
+
         final String m = new Gson().toJson(msg);
         System.out.println(m);
         Thread thread = new Thread() {
@@ -201,7 +191,6 @@ public class ClientService {
                     e.printStackTrace();
                 }
             }
-
         };
         thread.start();
         try {
@@ -212,7 +201,51 @@ public class ClientService {
 
     }
 
-    public void receive(ListView chatListView, ChatAdapter chatAdapter, ArrayList<ChatBubbleDTO> chatList, AppCompatActivity context) {
-        new ClientReceiverThread(clientSock,chatListView,chatAdapter,chatList,context).start();
+    public Message classificationType(String content) {
+        Pattern pattern = Pattern.compile("(@\\S+) ");
+        Matcher matcher = pattern.matcher(content);
+        List<String> receiverList= new ArrayList<>();
+        receiverList.add(user.getId());
+        while(matcher.find()) {
+            receiverList.add(matcher.group().replaceAll("(\\s+)","").substring(1));
+            content = content.replace(matcher.group(),"");
+        }
+        System.out.println("Saddas->"+receiverList);
+        content = content.replaceAll("(\\s+)","");
+
+        Message msg = new Message();
+        if(receiverList.size()==2) {
+            msg.setType("unicast");
+        }else if(receiverList.size()>2) {
+            msg.setType("multicast");
+        }else {
+            msg.setType("broadcast");
+        }
+        msg.setSender(user.getName());
+        msg.setMessage(content);
+        msg.setReceiver(receiverList);
+        return msg;
+    }
+    public void receive(ListView chatListView, ChatAdapter chatAdapter, ArrayList<ChatBubbleDTO> chatList, ListView navListView, AppCompatActivity context) {
+        new ClientReceiverThread(clientSock,chatListView,chatAdapter,chatList,navListView,context).start();
+    }
+
+    public String read() throws IOException {
+        return br.readLine();
+    }
+
+    public void write(String message) throws IOException {
+        if(message==null) return;
+        bw.write(message+"\n");
+        bw.flush();
+    }
+    public void close() {
+        try {
+            if(bw!=null)  bw.close();
+            if(br!=null)br.close();
+            if(clientSock!=null)clientSock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

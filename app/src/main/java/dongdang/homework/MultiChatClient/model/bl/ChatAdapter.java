@@ -15,6 +15,7 @@ import dongdang.homework.MultiChatClient.R;
 import dongdang.homework.MultiChatClient.controller.Controller;
 import dongdang.homework.MultiChatClient.model.dto.ChatBubbleDTO;
 import dongdang.homework.MultiChatClient.model.dto.UserInfoDTO;
+
 //채팅 리스트뷰 어댑터
 public class ChatAdapter extends BaseAdapter {
     private Context context;
@@ -48,7 +49,6 @@ public class ChatAdapter extends BaseAdapter {
         }
         LinearLayout bubbleLayout = convertView.findViewById(R.id.bubbleLayout);
         LinearLayout cardInLayout = convertView.findViewById(R.id.cardInLayout);
- //       CardView bubbleCardView = convertView.findViewById(R.id.bubbleCardView);
         TextView bubbleTVUser = convertView.findViewById(R.id.bubbleName);
         TextView bubbleContent = convertView.findViewById(R.id.bubbleContent);
 
@@ -60,7 +60,6 @@ public class ChatAdapter extends BaseAdapter {
 
         bubbleTVUser.setText(item.getSender());
         bubbleContent.setText(item.getContent());
-        //bubbleContent.setBackgroundColor(item.getBackgroundColor());
         GradientDrawable bgShape = (GradientDrawable)bubbleContent.getBackground();
         bgShape.setColor(item.getBackgroundColor());
         return convertView;

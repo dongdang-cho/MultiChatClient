@@ -1,134 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.ChatActivity">
+    tools:openDrawer="right"
+    android:fitsSystemWindows="true"
+    android:id="@+id/chatDrawerLayout"
+    >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:background="#FFF"
-        >
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#FFF"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:padding="10dp"
-            >
 
-            <ImageButton
-                android:id="@+id/chatBtnBack"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="left"
-                android:adjustViewBounds="true"
-                android:background="#00000000"
-                android:padding="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_back"></ImageButton>
-        </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.ChatActivity">
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:background="#FFF"
-            android:gravity="center"
-            android:layout_weight="2"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#FFF"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="10dp"
+
+                >
+
+                <ImageButton
+                    android:id="@+id/chatBtnBack"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:adjustViewBounds="true"
+                    android:background="#00000000"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_back"></ImageButton>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="#FFF"
                 android:gravity="center"
-                android:text="성결 채팅방"
-                android:textSize="30sp"
-                android:textStyle="bold"
+                android:layout_weight="2"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="성결 채팅방"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#FFF"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:padding="10dp"
+                >
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/ic_menu"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:background="#00000000"
+                    android:id="@+id/chatBtnMenu"
+                    android:padding="10dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical"
+            >
+
+            <ListView
+                android:id="@+id/chatListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="10dp"
+                android:listSelector="@android:color/transparent"
+                android:paddingHorizontal="20dp"
+
                 />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#FFF"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:layout_weight="1"
-            android:padding="10dp"
+
             >
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:src="@drawable/ic_menu"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:background="#00000000"
-                android:id="@+id/chatBtnMenu"
-                android:padding="10dp"
-                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                >
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="+"
+                    android:textSize="30sp"
+                    android:background="@drawable/activity_send_shape"
+                    android:id="@+id/chatBtnpPlus"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="9"
+                android:layout_marginHorizontal="10dp"
+                >
+                <EditText
+                    android:id="@+id/chatEtMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/activity_message_shape"
+                    android:imeOptions="actionGo"
+                    android:inputType="text"
+                    android:paddingHorizontal="5dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                >
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="▶"
+                    android:textSize="30sp"
+                    android:background="@drawable/activity_send_shape"
+                    android:id="@+id/chatBtnSend"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:orientation="vertical"
-
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:fitsSystemWindows="true"
+        android:background="#fff"
         >
-
-        <ListView
-            android:id="@+id/chatListView"
+        <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:listSelector="@android:color/transparent"
-            android:dividerHeight="0px"
-            android:divider="@null"
-            android:paddingHorizontal="20dp"
+            layout="@layout/nav_chat"
+            android:id="@+id/chatNv"
+            android:layout_gravity="right"
+            />
 
-           />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp"
-
-        >
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="+"
-            android:textSize="30sp"
-            android:layout_weight="2"
-            android:background="@drawable/activity_send_shape"
-            android:id="@+id/chatBtnpPlus"
-            />
-        <EditText
-            android:layout_marginHorizontal="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:background="@drawable/activity_message_shape"
-            android:id="@+id/chatEtMessage"
-            android:imeOptions="actionGo"
-            android:inputType="text"
-            />
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="▶"
-            android:textSize="30sp"
-            android:layout_weight="2"
-            android:background="@drawable/activity_send_shape"
-            android:id="@+id/chatBtnSend"
-            />
-    </LinearLayout>
-</LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>
