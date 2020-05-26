@@ -211,7 +211,7 @@ public class ClientService {
             content = content.replace(matcher.group(),"");
         }
         System.out.println("Saddas->"+receiverList);
-        content = content.replaceAll("(\\s+)","");
+        content = content.trim();
 
         Message msg = new Message();
         if(receiverList.size()==2) {
