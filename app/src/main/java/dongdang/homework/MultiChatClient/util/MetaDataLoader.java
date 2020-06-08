@@ -30,4 +30,7 @@ public class MetaDataLoader {
     public static int getPort() {
         return Integer.parseInt(metaDataProfile.getProperty("port"));
     }
+    public static int getFilePort() {
+        return Integer.parseInt(metaDataProfile.getProperty("filePort"));
+    }
 }

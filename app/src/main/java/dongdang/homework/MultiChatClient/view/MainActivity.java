@@ -26,7 +26,8 @@ import dongdang.homework.MultiChatClient.util.MetaDataLoader;
 
 public class MainActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_INTERNET=1001;
-
+    private final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE=1002;
+    private final int MY_PERMISSIONS_REQUEST_READ_STORAGE=1003;
     EditText etIP,etPort,etID,etPW;
     Button btnConnect, btnJoin, btnExit;
 
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     //권한 체크
     public void permissionCheck() {
-        String[] permissions = new String[]{Manifest.permission.INTERNET};
+        String[] permissions = new String[]{Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
         List<String> listPermisssionNeeded = new ArrayList<>();
 
         for(String permission : permissions) {
@@ -124,7 +125,10 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_INTERNET: {
+            case MY_PERMISSIONS_REQUEST_INTERNET:
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE:
+            case MY_PERMISSIONS_REQUEST_READ_STORAGE:
+                {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

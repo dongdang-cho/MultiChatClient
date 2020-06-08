@@ -1,7 +1,12 @@
 package dongdang.homework.MultiChatClient.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,15 +17,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,13 +42,14 @@ import dongdang.homework.MultiChatClient.model.dto.ChatBubbleDTO;
 public class ChatActivity extends AppCompatActivity {
     ListView lvChat, lvNvUser;
     EditText etMessage;
-    Button btnSend;
+    Button btnSend, btnPlus;
     ArrayList<ChatBubbleDTO> bubbleDTOList;
     ChatAdapter chatAdapter;
     ImageButton btnBack, btnMenu;
     TextView tvNvMyUser;
     DrawerLayout drawer;
     private final long FINISH_INTERVAL_TIME = 2000;
+    private final int GALLERY_CODE = 101;
     private long backPressedTime = 0;
 
 
@@ -51,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         lvChat = (ListView)findViewById(R.id.chatListView);
         etMessage = (EditText)findViewById(R.id.chatEtMessage);
         btnSend = (Button)findViewById(R.id.chatBtnSend);
+        btnPlus = (Button)findViewById(R.id.chatBtnpPlus);
         btnBack = (ImageButton)findViewById(R.id.chatBtnBack);
         btnMenu = (ImageButton)findViewById(R.id.chatBtnMenu);
         lvNvUser = (ListView)findViewById(R.id.navLvUser);
@@ -114,7 +124,15 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
+        btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent,GALLERY_CODE);
+            }
+        });
         lvNvUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -129,6 +147,44 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == GALLERY_CODE) {
+            if(resultCode == RESULT_OK) {
+                try {
+                    View dialog = (View)View.inflate(ChatActivity.this, R.layout.dialog_send_image,null);
+                    ImageView iv = dialog.findViewById(R.id.dialogIv);
+                    final Uri imageUri = data.getData();
+                    iv.setImageURI(imageUri);
+                    final AlertDialog.Builder dlg= new AlertDialog.Builder(ChatActivity.this);
+                    final AlertDialog ad = dlg.create();
+
+                    dlg.setTitle("전송할 이미지");
+                    dlg.setView(dialog);
+                    dlg.setPositiveButton("전송", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            File file = new File(imageUri.getPath());
+
+                            Toast.makeText(ChatActivity.this,"전송되었습니다.",Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    dlg.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                           ad.dismiss();
+                        }
+                    });
+                    dlg.show();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     //2번 눌러야 뒤로가기.

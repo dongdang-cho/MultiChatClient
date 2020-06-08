@@ -46,8 +46,6 @@ public class ClientService {
         typeMap.put("my",new ChatBubbleDTO(Gravity.RIGHT,"my",Color.rgb(180,162,242)));
     }
 
-
-
     public boolean connect(final String ip, final int port, String id, String pw) {
         user = new UserInfoDTO(id,pw);
         user.setType("login");
@@ -148,6 +146,7 @@ public class ClientService {
         }
         return state;
     }
+
     public Socket getClientSock() {
         return clientSock;
     }

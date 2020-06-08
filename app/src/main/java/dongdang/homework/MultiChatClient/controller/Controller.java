@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+
 import dongdang.homework.MultiChatClient.util.MetaDataLoader;
 import dongdang.homework.MultiChatClient.view.ChatActivity;
 import dongdang.homework.MultiChatClient.model.bl.ClientService;
@@ -16,6 +18,7 @@ public class Controller {
 
     public static final String SERVER_IP = MetaDataLoader.getServerAdr();
     public static final int PORT = MetaDataLoader.getPort();
+    public static final int filePort = MetaDataLoader.getFilePort();
 
     //로그인
     public static void serverConncect(String id, String pw, Context content) {
@@ -40,6 +43,9 @@ public class Controller {
         }
     }
 
+    public static void sendImage(File file, AppCompatActivity context) {
+
+    }
     //getter
     public static ClientService getClientService() {
         return clientService;
